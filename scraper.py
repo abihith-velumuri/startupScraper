@@ -1,37 +1,32 @@
-# library to send HTTP requests and fetch content from a webpage
 import requests
-# library used to parse and extract structured data from HTML documents
 from bs4 import BeautifulSoup
 import json
-import os
 
 def scrape():
-    url = "http://ethans_fake_twitter_site.surge.sh/"
+    url = "https://a16z.com/"
+    # response object. Here are SOME of its attributes:
+    # response.status_code : 200 for success, 404 for not found, 500 for server error
+    # response.headers : info sent by client to the server to provide information about request
+    # response.text : raw response content as a string 
+    # response.content : raw response content in bytes
+    # response.json : parses response content as a JSON and returns a dictionary
     response = requests.get(url)
+    # print(response.text)
+
+    # BeautifulSoup parses HTML content
     content = BeautifulSoup(response.content, 'html.parser')
+    # print(content)
 
-    # tweet = content.findAll('p', attrs={"class": "content"})
-    tweetArr = []
-    for tweet in content.findAll('div', attrs={"class": "tweetcontainer"}):
-        tweetObject = {"author": tweet.find('h2', attrs={"class": "author"}).text, 
-                       "date": tweet.find('h5', attrs={"class": "dateTime"}).text,
-                       "tweet": tweet.find('p', attrs={"class": "content"}).text, 
-                       "likes": tweet.find('p', attrs={"class": "likes"}).text,
-                       "shares": tweet.find('p', attrs={"class": "shares"}).text}
-        tweetArr.append(tweetObject)
+    page_text = []
+    for text in content.find_all('div', attrs={"class": "home-intro data-content-on-scroll"}):
+        print(text.attrs)
+        # page_text.append(text.text)
+    
+    # for section in page_text:
+    #     print(section, "\n")
 
-    json_file = "twitterData.json"
-    with open(json_file, 'w') as outfile:
-        json.dump(tweetArr, outfile)
+# <p style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">Andreessen Horowitz (aka a16z) is a venture capital firm that backs bold entrepreneurs <a class="link-decor" href="/news-content">building the future</a> through technology. We are&nbsp;<a class="link-decor" href="/portfolio">stage agnostic</a>. We invest in seed to venture to <a class="link-decor" href="/growth/">growth-stage technology</a> companies, across <a class="link-decor" href="https://a16z.com/ai/">AI</a>, <a class="link-decor" href="/bio-health/">bio&nbsp;+&nbsp;healthcare</a>, <a class="link-decor" href="/consumer/">consumer</a>, <a class="link-decor" href="https://a16zcrypto.com/">crypto</a>, <a class="link-decor" href="/enterprise/">enterprise</a>, <a class="link-decor" href="/fintech/">fintech</a>, <a class="link-decor" href="/games">games</a>, <a class="link-decor" href="https://a16z.com/infra/">infrastructure</a>, and companies building toward <a class="link-decor" href="/american-dynamism/">American dynamism</a>. a16z has $44B in committed capital across multiple funds.</p>
 
-def parse_json():
-    json_file = "twitterData.json"
-    with open(json_file) as json_data:
-        jsonData = json.load(json_data)
-        for i in jsonData:
-            if "trump" in i["tweet"].lower():
-                print(i)
+if __name__ == "__main__":
+    scrape()
 
-if __name__ == '__main__':
-    # scrape()
-    parse_json()
