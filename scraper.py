@@ -19,13 +19,12 @@ def scrape():
 
     page_text = []
     for text in content.find_all('div', attrs={"class": "home-intro data-content-on-scroll"}):
-        print(text.attrs)
-        # page_text.append(text.text)
+        # print(text.attrs)
+        page_text.append(text.text)
     
-    # for section in page_text:
-    #     print(section, "\n")
+    for section in page_text:
+        print(section, "\n")
 
-# <p style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">Andreessen Horowitz (aka a16z) is a venture capital firm that backs bold entrepreneurs <a class="link-decor" href="/news-content">building the future</a> through technology. We are&nbsp;<a class="link-decor" href="/portfolio">stage agnostic</a>. We invest in seed to venture to <a class="link-decor" href="/growth/">growth-stage technology</a> companies, across <a class="link-decor" href="https://a16z.com/ai/">AI</a>, <a class="link-decor" href="/bio-health/">bio&nbsp;+&nbsp;healthcare</a>, <a class="link-decor" href="/consumer/">consumer</a>, <a class="link-decor" href="https://a16zcrypto.com/">crypto</a>, <a class="link-decor" href="/enterprise/">enterprise</a>, <a class="link-decor" href="/fintech/">fintech</a>, <a class="link-decor" href="/games">games</a>, <a class="link-decor" href="https://a16z.com/infra/">infrastructure</a>, and companies building toward <a class="link-decor" href="/american-dynamism/">American dynamism</a>. a16z has $44B in committed capital across multiple funds.</p>
 
 if __name__ == "__main__":
     scrape()
